@@ -129,7 +129,7 @@ def reconstruct_image(features, net, net_gen,
     if gen_feat_bounds is None:
         num_of_unit = np.prod(feat_gen_size)
         gen_feat_bounds = []
-        for j in xrange(num_of_unit):
+        for j in range(num_of_unit):
             # as default, lower bound is 0, upper bound is 100.
             gen_feat_bounds.append((0., 100.))
 

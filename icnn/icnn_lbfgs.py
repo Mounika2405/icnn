@@ -96,9 +96,9 @@ def reconstruct_image(features, net,
 
     # img bounds
     img_min = -img_mean
-    img_max = img_min + 255.
-    img_bounds = [(img_min[0], img_max[0])]*(num_of_pix/3) + [(img_min[1],
-                                                               img_max[1])]*(num_of_pix/3) + [(img_min[2], img_max[2])]*(num_of_pix/3)
+    img_max = img_min + 255
+    img_bounds = [(img_min[0], img_max[0])]*(num_of_pix//3) + [(img_min[1], img_max[1])]*(num_of_pix//3) + [(img_min[2], img_max[2])]*(num_of_pix//3)
+    # print(img_bounds)
 
     # initial image
     if initial_image is None:
@@ -111,8 +111,10 @@ def reconstruct_image(features, net,
     initial_image = img_preprocess(initial_image, img_mean)
     initial_image = initial_image.flatten()
 
+    # print('initial_image_size', initial_image.shape)
+
     # layer_list
-    layer_list = features.keys()
+    layer_list = list(features.keys())
     layer_list = sort_layer_list(net, layer_list)
 
     # number of layers
@@ -172,7 +174,7 @@ def obj_fun(img, net, features, feature_masks, layer_weight, loss_fun, save_inte
         PIL.Image.fromarray(snapshot_img).save(save_path)
 
     # layer_list
-    layer_list = features.keys()
+    layer_list = list(features.keys())
     layer_list = sort_layer_list(net, layer_list)
 
     # num_of_layer
@@ -186,7 +188,7 @@ def obj_fun(img, net, features, feature_masks, layer_weight, loss_fun, save_inte
     loss = 0.
     layer_start = layer_list[-1]
     net.blobs[layer_start].diff.fill(0.)
-    for j in xrange(num_of_layer):
+    for j in range(num_of_layer):
         layer_start_index = num_of_layer - 1 - j
         layer_end_index = num_of_layer - 1 - j - 1
         layer_start = layer_list[layer_start_index]

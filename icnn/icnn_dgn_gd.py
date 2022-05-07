@@ -130,7 +130,7 @@ def reconstruct_image(features, net, net_gen,
             os.makedirs(save_intermediate_path)
 
     # input and output layers of the generator
-    gen_layer_list = net_gen.blobs.keys()
+    gen_layer_list = list(net_gen.blobs.keys())
     if input_layer_gen is None:
         input_layer_gen = gen_layer_list[0]
     if output_layer_gen is None:
@@ -152,14 +152,14 @@ def reconstruct_image(features, net, net_gen,
     img_size_gen = net_gen.blobs[output_layer_gen].data.shape[-3:]
 
     # top left offset for cropping the output image to get the 227x227 image
-    top_left = ((img_size_gen[1] - img_size[1])/2,
-                (img_size_gen[2] - img_size[2])/2)
+    top_left = (int((img_size_gen[1] - img_size[1])/2),
+                int((img_size_gen[2] - img_size[2])/2))
 
     # image mean
     img_mean = net.transformer.mean['data']
 
     # layer_list
-    layer_list = features.keys()
+    layer_list = list(features.keys())
     layer_list = sort_layer_list(net, layer_list)
 
     # number of layers
@@ -181,7 +181,7 @@ def reconstruct_image(features, net, net_gen,
     feat_gen = initial_gen_feat.copy()
     delta_feat_gen = np.zeros_like(feat_gen)
     loss_list = np.zeros(iter_n, dtype='float32')
-    for t in xrange(iter_n):
+    for t in range(iter_n):
 
         # parameters
         lr = lr_start + t * (lr_end - lr_start) / iter_n
@@ -213,7 +213,7 @@ def reconstruct_image(features, net, net_gen,
         loss = 0.
         layer_start = layer_list[-1]
         net.blobs[layer_start].diff.fill(0.)
-        for j in xrange(num_of_layer):
+        for j in range(num_of_layer):
             layer_start_index = num_of_layer - 1 - j
             layer_end_index = num_of_layer - 1 - j - 1
             layer_start = layer_list[layer_start_index]
